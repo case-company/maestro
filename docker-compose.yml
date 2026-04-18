@@ -1,0 +1,38 @@
+services:
+  maestro:
+    build: .
+    container_name: maestro
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4300:4300"   # bind localhost — Traefik/Nginx expõe
+    env_file:
+      - .env
+    volumes:
+      - maestro_data:/data              # state, cache, journal
+      - maestro_claude:/root/.claude    # OAuth creds Max + accounts rotation
+      - maestro_logs:/var/log/maestro
+    networks:
+      - maestro_net
+      - traefik                         # rede compartilhada com reverse proxy
+    labels:
+      # Traefik labels — ajustar se não usar Traefik
+      - "traefik.enable=true"
+      - "traefik.http.routers.maestro.rule=Host(`maestro.manager01.casein.com.br`)"
+      - "traefik.http.routers.maestro.entrypoints=websecure"
+      - "traefik.http.routers.maestro.tls.certresolver=letsencrypt"
+      - "traefik.http.services.maestro.loadbalancer.server.port=4300"
+      - "traefik.docker.network=traefik"
+
+volumes:
+  maestro_data:
+    driver: local
+  maestro_claude:
+    driver: local
+  maestro_logs:
+    driver: local
+
+networks:
+  maestro_net:
+    driver: bridge
+  traefik:
+    external: true
