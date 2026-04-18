@@ -29,15 +29,28 @@ fi
 echo "→ Build maestro:latest"
 docker build -t maestro:latest .
 
-# 4. Pre-mount volume Claude + seed accounts
-docker volume create maestro_claude 2>/dev/null || true
-CLAUDE_VOL_PATH=$(docker volume inspect maestro_claude --format '{{.Mountpoint}}')
-mkdir -p "$CLAUDE_VOL_PATH/.claude-accounts"
-cp -rn /root/.claude-accounts/* "$CLAUDE_VOL_PATH/.claude-accounts/" 2>/dev/null || true
-
-# 5. Deploy stack (Swarm)
+# 4. Deploy stack (Swarm) — volumes are auto-created with stack prefix: maestro_maestro_claude
 echo "→ Stack deploy: maestro"
 docker stack deploy -c docker-compose.yml maestro --resolve-image never
+
+# 5. Seed Claude pool state (only if not already seeded)
+sleep 3
+CLAUDE_VOL=$(docker volume inspect maestro_maestro_claude --format '{{.Mountpoint}}' 2>/dev/null || echo "")
+if [ -n "$CLAUDE_VOL" ] && [ ! -f "$CLAUDE_VOL/maestro_accounts_state.json" ]; then
+    echo "→ Seeding Claude pool state"
+    cat > "$CLAUDE_VOL/maestro_accounts_state.json" <<EOF
+{
+  "active": "account2",
+  "accounts": {
+    "account2": {"email": "infra@queilatrizotti.com.br", "cooldown_until": 0},
+    "account3": {"email": "adm@queilacomque.com.br", "cooldown_until": 0}
+  }
+}
+EOF
+    cp /root/.claude-accounts/account2/credentials.json "$CLAUDE_VOL/.credentials.json"
+    chmod 600 "$CLAUDE_VOL/.credentials.json" "$CLAUDE_VOL/maestro_accounts_state.json"
+    docker service update --force maestro_maestro >/dev/null
+fi
 
 echo ""
 echo "✓ Maestro deployed"

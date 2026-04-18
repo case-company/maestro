@@ -14,9 +14,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Claude CLI instalado no container (vai usar OAuth do volume)
-RUN curl -fsSL https://claude.ai/install.sh | sh -s -- latest && \
-    ln -s /root/.local/bin/claude /usr/local/bin/claude || true
+# Claude CLI instalado no container (usa OAuth do volume em runtime)
+# Installer precisa de bash, não sh
+RUN curl -fsSL https://claude.ai/install.sh | bash -s -- latest && \
+    ln -sf /root/.local/bin/claude /usr/local/bin/claude && \
+    /usr/local/bin/claude --version
 
 WORKDIR /app
 
