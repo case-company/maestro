@@ -9,6 +9,7 @@ services:
       - maestro_data:/data
       - maestro_claude:/root/.claude
       - maestro_logs:/var/log/maestro
+      - /root/.claude-accounts:/root/.claude-accounts:ro
     networks:
       - network_public
     deploy:
