@@ -2,7 +2,8 @@
 # Configura webhook da Evolution API pra apontar pro Maestro
 set -e
 
-source ../.env
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../.env"
 
 WEBHOOK_URL="https://maestro.manager01.casein.com.br/webhook/maestro"
 
