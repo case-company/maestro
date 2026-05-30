@@ -1,0 +1,37 @@
+name: Feature request
+description: Propor melhoria, produto ou ajuste operacional
+title: "feat: "
+labels: ["enhancement", "triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: Qual dor de negócio, operação ou usuário esta melhoria resolve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposta
+      description: Descreva a solução desejada em termos de resultado, não só implementação.
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Área afetada
+      options:
+        - Frontend
+        - Backend/API
+        - Banco/Supabase
+        - Deploy/Infra
+        - Documentação/Handoff
+        - Produto/Operação
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Como validar
+      description: Que teste, métrica ou fluxo prova que a melhoria ficou correta?

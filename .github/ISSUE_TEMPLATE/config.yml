@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Handoff / acesso sensível
+    url: https://github.com/orgs/case-company/repositories
+    about: Não publique segredos ou dados sensíveis em issues. Use canal privado com o owner técnico.

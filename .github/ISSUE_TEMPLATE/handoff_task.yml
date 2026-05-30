@@ -1,0 +1,27 @@
+name: Handoff task
+description: Tarefa de passagem de bastão, documentação ou operação
+title: "handoff: "
+labels: ["handoff", "documentation"]
+body:
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo
+      description: O que precisa ser documentado, organizado ou transferido?
+    validations:
+      required: true
+  - type: textarea
+    id: owner
+    attributes:
+      label: Owner e destinatário
+      description: Quem entrega e quem recebe?
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: README/docs atualizados
+        - label: Deploy canônico identificado
+        - label: Variáveis documentadas sem valores
+        - label: Runbook de validação descrito
+        - label: Riscos/debitos registrados
