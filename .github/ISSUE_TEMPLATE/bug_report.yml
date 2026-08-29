@@ -1,0 +1,37 @@
+name: Bug report
+description: Reportar comportamento incorreto sem expor dados sensíveis
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: O que aconteceu e qual fluxo foi afetado?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidências seguras
+      description: Anexe screenshots/logs anonimizados. Não cole tokens, senhas, telefones ou dados de clientes.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Segurança
+      options:
+        - label: Confirmei que não há segredo ou dado sensível nesta issue.
+          required: true
